@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Dados do funcionário{% endblock %}
+{% block content %}
+<div class="formulario">
+    <h1 class="h3 mb-3">Dados do funcionário</h1>
+    <div class="border rounded p-3 p-md-4 bg-white">
+        <div class="mb-3"><label class="form-label">Nome</label><input class="form-control" value="{{ fun.nome }}" readonly></div>
+        <div class="mb-3"><label class="form-label">CPF</label><input class="form-control" value="{{ fun.cpf }}" readonly></div>
+        <div class="mb-3"><label class="form-label">E-mail</label><input class="form-control" value="{{ fun.email }}" readonly></div>
+        <div class="mb-3"><label class="form-label">Remuneração</label><input class="form-control" value="R$ {{ fun.remuneracao|floatformat:2 }}" readonly></div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'editar_funcionario' pk=fun.pk %}" class="btn btn-success">Editar</a>
+            <a href="{% url 'lista_funcionarios' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

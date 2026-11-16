@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Excluir funcionário{% endblock %}
+{% block content %}
+<div class="formulario">
+    <h1 class="h3 mb-3">Excluir funcionário</h1>
+    <div class="border rounded p-3 p-md-4 bg-white">
+        <p>Deseja realmente excluir o funcionário <strong>{{ funcionario.nome }}</strong>?</p>
+        <p class="mb-1"><strong>CPF:</strong> {{ funcionario.cpf }}</p>
+        <p><strong>E-mail:</strong> {{ funcionario.email }}</p>
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            <a href="{% url 'lista_funcionarios' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

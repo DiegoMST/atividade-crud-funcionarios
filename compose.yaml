@@ -1,0 +1,37 @@
+services:
+  banco:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-root_local_dev_2026}"
+      MYSQL_DATABASE: funcionarios
+      MYSQL_USER: crud
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-crud_local_dev_2026}"
+    volumes:
+      - dados_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 25s
+
+  sistema:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      MYSQL_DATABASE: funcionarios
+      MYSQL_USER: crud
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-crud_local_dev_2026}"
+      MYSQL_HOST: banco
+      MYSQL_PORT: "3306"
+      DJANGO_DEBUG: "1"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:-chave-somente-ambiente-local-nao-publicar-na-internet}"
+    depends_on:
+      banco:
+        condition: service_healthy
+
+volumes:
+  dados_mysql:
